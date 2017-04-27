@@ -1,34 +1,57 @@
 const readline = require('readline');
 const watson = require('watson-developer-cloud');
-const fs = require('fs');
+const xlsxParser = require('./conversation_fromJSONtoCSV');
+const cleanner = require('../tooling/cleanner');
 
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
 
-var conversation = watson.conversation({
-  username: "a4e27669-e8af-4e09-9f4e-580fd0ef103d",
-  password: "zgPYHw5cKm1c",
-  version: 'v1',
-  version_date: '2017-04-21'
-});
 
+module.exports.listingWorkspace = function (username,password) {
+  let conversation = watson.conversation({
+    username: username,
+    password: password,
+    version: 'v1',
+    version_date: '2017-04-21'
+  });
+  return new Promise(function(resolve, reject) {
+    getWorkSpaces(conversation)
+    .then((infoWorkspaces)=>{
+      let wsNameID = {}
+      for (ws of infoWorkspaces) {
+        wsNameID[ws.name] = ws.workspace_id
+      }
+      resolve(wsNameID)
+    })
+    .catch((err)=>{
+      reject(err)
+    })
+  });
+};
 
-
-getWorkSpaces(conversation).then((workspaces)=>{
-  return chooseWorkspace(workspaces)
-}).then((selectedWorkspace)=>{
-  console.log(selectedWorkspace);
-  return exportWorspace(conversation,selectedWorkspace.workspace_id)
-}).then((exportWorspace)=>{
-  fs.writeFileSync('exportWorspace.json',JSON.stringify(exportWorspace));
-  console.log('done');
-
-}).catch((err)=>{
-  console.error(err);
-  process.exit(1);
-})
+module.exports.exportWorspace = function (username,password,workspace_id) {
+  // we make a bit of space in the tmp directory
+  cleanner.manageSize();
+  let conversation = watson.conversation({
+    username: username,
+    password: password,
+    version: 'v1',
+    version_date: '2017-04-21'
+  });
+  return new Promise(function(resolve, reject) {
+    exportWorspace(conversation,workspace_id)
+    .then((fullworkspace)=>{
+      let nameFile = Date.now()+`.xlsx`;
+      let pathFile = `./public/tmp/${nameFile}`;
+      console.log("writting tmp file :",pathFile);
+      xlsxParser.formatXLSX(fullworkspace,pathFile)
+      resolve(pathFile.slice(8));
+    })
+    .catch((err)=>{reject(err)});
+  });
+};
 
 
 function chooseWorkspace(workspaces){
@@ -51,7 +74,7 @@ function getWorkSpaces(conversation){
   return new Promise(function(resolve, reject) {
     conversation.listWorkspaces({},(err, response)=>{
       if(err){
-        reject(new Error(err))
+        reject(err)
       }else {
         resolve(response.workspaces)
       }

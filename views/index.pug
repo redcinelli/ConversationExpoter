@@ -3,3 +3,14 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+
+  form(action='/api/listworkspace')
+            div.form-group
+              label(for='name') Conversation username:
+              input#username.form-control(type='text',value='a4e27669-e8af-4e09-9f4e-580fd0ef103d',  name='username')
+            div.form-group
+              label(for='pw') Conversation Password:
+              input#password.form-control(type='password',value='zgPYHw5cKm1c' ,name='password')
+            button.btn.btn-primary(type='button' id='triggerGW') Sign up
+
+  div(id='result')
