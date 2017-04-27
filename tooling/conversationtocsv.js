@@ -10,7 +10,7 @@ const rl = readline.createInterface({
 
 
 module.exports.listingWorkspace = function (username,password) {
-  let conversation = watson.conversation({
+  var conversation = watson.conversation({
     username: username,
     password: password,
     version: 'v1',
@@ -19,7 +19,7 @@ module.exports.listingWorkspace = function (username,password) {
   return new Promise(function(resolve, reject) {
     getWorkSpaces(conversation)
     .then((infoWorkspaces)=>{
-      let wsNameID = {}
+      var wsNameID = {}
       for (ws of infoWorkspaces) {
         wsNameID[ws.name] = ws.workspace_id
       }
@@ -34,7 +34,7 @@ module.exports.listingWorkspace = function (username,password) {
 module.exports.exportWorspace = function (username,password,workspace_id) {
   // we make a bit of space in the tmp directory
   cleanner.manageSize();
-  let conversation = watson.conversation({
+  var conversation = watson.conversation({
     username: username,
     password: password,
     version: 'v1',
@@ -43,8 +43,8 @@ module.exports.exportWorspace = function (username,password,workspace_id) {
   return new Promise(function(resolve, reject) {
     exportWorspace(conversation,workspace_id)
     .then((fullworkspace)=>{
-      let nameFile = Date.now()+`.xlsx`;
-      let pathFile = `./public/tmp/${nameFile}`;
+      var nameFile = Date.now()+`.xlsx`;
+      var pathFile = `./public/tmp/${nameFile}`;
       console.log("writting tmp file :",pathFile);
       xlsxParser.formatXLSX(fullworkspace,pathFile)
       resolve(pathFile.slice(8));
@@ -56,8 +56,8 @@ module.exports.exportWorspace = function (username,password,workspace_id) {
 
 function chooseWorkspace(workspaces){
   return new Promise(function(resolve, reject) {
-    let listWorkspace = []
-    let selectedWorkspace = {}
+    var listWorkspace = []
+    var selectedWorkspace = {}
     workspaces.forEach(function(workspace,index,array) {
       listWorkspace.push(workspace.name);
       console.log(`${index} : ${workspace.name}`);

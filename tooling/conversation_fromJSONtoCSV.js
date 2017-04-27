@@ -1,16 +1,16 @@
 const XLSX = require('xlsx');
 
 module.exports.formatXLSX = function (data,pathToCSV) {
-  let wb = {}
+  var wb = {}
   wb.Sheets = {};
   wb.Props = {};
   wb.SSF = {};
   wb.SheetNames = [];
-  let dataInJson = data
-  let autoIncrement = 0;
+  var dataInJson = data
+  var autoIncrement = 0;
   console.log("Parsing Data from workspace : ",dataInJson.name);
 
-  let dataToCsv = {}
+  var dataToCsv = {}
   dataToCsv.intents = [["Question","Intention"]]
   dataToCsv.entities = [["entity","value","synonym"]]
 
@@ -30,7 +30,7 @@ function extractIintent(dataToCsv,dataInJson){
       console.log("\textracting data from intent :",val.intent);
       val.examples.forEach(function(exVal,exIndex,exArray){
         //  autoIncrement+=1;
-        let newRow = [exVal.text,val.intent]
+        var newRow = [exVal.text,val.intent]
         dataToCsv.intents.push(newRow);
       })
     })
@@ -42,7 +42,7 @@ function extractIintent(dataToCsv,dataInJson){
       console.log("\textracting data from entities :",val.entity);
       val.values.forEach(function(exVal,exIndex,exArray){
         exVal.synonyms.forEach(function(synonym, synonymIndex, synonymsArray){
-          let newRow = [val.entity, exVal.value, synonym]
+          var newRow = [val.entity, exVal.value, synonym]
           dataToCsv.entities.push(newRow);
         })
       })
@@ -52,7 +52,7 @@ function extractIintent(dataToCsv,dataInJson){
 }
 
 function formatToxlxs (wb,nameSheet, data) {
-  let ws_name = nameSheet;
+  var ws_name = nameSheet;
   /* create worksheet: */
   var ws = {}
 

@@ -6,8 +6,8 @@ const conversationToCsv = require('../tooling/conversationtocsv');
 /* GET users listing. */
 router.get('/listworkspace', function(req, res, next) {
   console.log(req.query);
-  let username = req.query.username;
-  let password = req.query.password;
+  var username = req.query.username;
+  var password = req.query.password;
   if(!password || !username || username == '' || password == ''){
     console.log("pop",username,password);
     res.status(406).send("I need the username & password");
@@ -24,9 +24,9 @@ router.get('/listworkspace', function(req, res, next) {
 
 router.get('/exportworkspace', function(req, res, next) {
   console.log(req.query);
-  let username = req.query.username;
-  let password = req.query.password;
-  let workspace_id =  req.query.workspace_id;
+  var username = req.query.username;
+  var password = req.query.password;
+  var workspace_id =  req.query.workspace_id;
   if(!password || !username || username == '' || password == ''|| !workspace_id || workspace_id == ''){
     console.log("pop",username,password);
     res.status(406).send("I need the username & password");

@@ -13,10 +13,10 @@ function totSize(path){
       if(err) reject(new Error(err));
       if(files==undefined) reject(new Error(`No files in this following directory : ${path}`));
       else {
-        let arrPromFile = [];
+        var arrPromFile = [];
         for (file of files) {
-          let P = new Promise(function(resStat, rejStat) {
-            let newPath = path+file;
+          var P = new Promise(function(resStat, rejStat) {
+            var newPath = path+file;
             // console.log(newPath);
             fs.stat(newPath,function(err,stat){
               if(err){
@@ -41,7 +41,7 @@ function deleteOldest(){
       if(files==undefined)reject(new Error(`No files in this following directory : ${pathToTmp}`));
       else {
         file = files.map((file)=>{return file.split('.')[0]}).min()
-        let pathFileDelete = pathToTmp+file+'.xlsx'
+        var pathFileDelete = pathToTmp+file+'.xlsx'
         fs.unlink(pathFileDelete,function(err){
           if(err)reject(new Error(err))
           else resolve()
