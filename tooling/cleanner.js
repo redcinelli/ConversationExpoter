@@ -12,6 +12,7 @@ function totSize(path){
     fs.readdir(path,function(err,files){
       if(err) reject(new Error(err));
       if(files==undefined) reject(new Error(`No files in this following directory : ${path}`));
+      console.log(`files in tmp directory :${files}`);
       else {
         var arrPromFile = [];
         for (file of files) {
@@ -28,7 +29,9 @@ function totSize(path){
           });
           arrPromFile.push(P)
         }
-        Promise.all(arrPromFile).then((arrSize)=>{resolve(arrSize.reduce((a,b)=>{return a+b;}))}).catch((err)=>{reject(err)});
+        Promise.all(arrPromFile)
+                .then((arrSize)=>{resolve(arrSize.reduce((a,b)=>{return a+b;}))})
+                .catch((err)=>{reject(err)});
       }
     })
   });
