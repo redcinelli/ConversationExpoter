@@ -33,7 +33,6 @@ router.get('/exportworkspace', function(req, res, next) {
   }else {
     conversationToCsv.exportWorspace(username,password,workspace_id)
     .then((pathFile)=>{
-      let readStream = fs.createReadStream(pathFile);
       res.status(200).send(pathFile)
     }).catch((err)=>{
       console.log(err);

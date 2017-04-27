@@ -57,7 +57,7 @@ module.exports.manageSize = function () {
     if(size > sizeTriggerDelete){
       console.log('need to delete');
       deleteOldest().then(()=>{
-        manageSize();
+        module.exports.manageSize();
       }).catch((err)=>{
         console.error(err);
       })
