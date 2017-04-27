@@ -7,7 +7,7 @@ $(document).on('click','#triggerGW',function(e){
   $.get( "/api/listWorkspace", { username: username, password: password })
   .done(function(data){
     console.log(data);
-    cleanResult() 
+    cleanResult()
     for (var ws in data) {
       console.log(data[ws]);
       $( "#result" ).append( `<button id="${data[ws]}" class="trigger btn btn-primary">${ws}</button>` );
@@ -15,7 +15,7 @@ $(document).on('click','#triggerGW',function(e){
   })
   .fail(function(data){
     console.log(data);
-    alert(data);
+    alert(JSON.stringify(data));
   });
 });
 
@@ -30,7 +30,7 @@ $(document).on('click','.trigger',function(){
   })
   .fail(function(data){
     console.log(data);
-    alert(data);
+    alert(JSON.stringify(data));
   });
 })
 
