@@ -12,8 +12,8 @@ function totSize(path){
     fs.readdir(path,function(err,files){
       if(err) reject(new Error(err));
       if(files==undefined) reject(new Error(`No files in this following directory : ${path}`));
-      console.log(`files in tmp directory :${files}`);
       else {
+        console.log(`files in tmp directory :${files}`);
         var arrPromFile = [];
         for (file of files) {
           var P = new Promise(function(resStat, rejStat) {

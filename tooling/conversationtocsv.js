@@ -2,7 +2,7 @@ const readline = require('readline');
 const watson = require('watson-developer-cloud');
 const xlsxParser = require('./conversation_fromJSONtoCSV');
 const cleanner = require('../tooling/cleanner');
-
+const path = require('path');
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
@@ -44,7 +44,7 @@ module.exports.exportWorspace = function (username,password,workspace_id) {
     exportWorspace(conversation,workspace_id)
     .then((fullworkspace)=>{
       var nameFile = Date.now()+`.xlsx`;
-      var pathFile = `./public/tmp/${nameFile}`;
+      var pathFile = path.join(__dirname,'..','public','tmp',nameFile);
       console.log("writting tmp file :",pathFile);
       xlsxParser.formatXLSX(fullworkspace,pathFile)
       resolve(pathFile.slice(8));
