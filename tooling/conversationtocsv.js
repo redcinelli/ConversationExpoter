@@ -3,6 +3,7 @@ const watson = require('watson-developer-cloud');
 const xlsxParser = require('./conversation_fromJSONtoCSV');
 const cleanner = require('../tooling/cleanner');
 const path = require('path');
+const fs = require('fs');
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
