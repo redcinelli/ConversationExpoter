@@ -46,25 +46,27 @@ module.exports.exportWorspace = function (username,password,workspace_id) {
     .then((fullworkspace)=>{
       var nameFile = Date.now()+`.xlsx`;
       var pathFile = path.join(__dirname,'..','public','tmp',nameFile);
-      console.log('///////////////////////////////////////////////////');
-      try {
-        console.log('dirnanme : ',__dirname);
-        console.log('statSync dirnanme: ',fs.statSync(__dirname));
-        console.log('statSync : ',fs.statSync(path.join(__dirname,'..','public','tmp')));
-        console.log(fs.readdirSync(path.join(__dirname,'..','public','tmp')));
-      } catch (e) {
-        console.log('error : ',e);
-      } finally {
-        console.log('///////////////////////////////////////////////////');
-      }
-      console.log("writting tmp file :",pathFile);
+      // console.log('dirnanme : ',__dirname);
+      // console.log('statSync dirnanme: ',fs.statSync(__dirname));
+      // console.log('statSync : ',fs.statSync(path.join(__dirname,'..','public','tmp')));
+      // console.log(fs.readdirSync(path.join(__dirname,'..','public','tmp')));
+      // console.log('error : ',e);
+      // console.log("writting tmp file :",pathFile);
       xlsxParser.formatXLSX(fullworkspace,pathFile)
-      resolve(pathFile.slice(8));
+      resolve(pathFile);
     })
     .catch((err)=>{reject(err)});
   });
 };
-
+module.exports.uploadJSONtoxlsx = function (data) {
+  return new Promise(function(resolve, reject) {
+    var nameFile = Date.now()+`.xlsx`;
+    var pathFile = path.join(__dirname,'..','public','tmp',nameFile);
+    console.log('starting parse of the json');
+    xlsxParser.formatXLSX(data,pathFile)
+    resolve(pathFile);
+  });
+};
 
 function chooseWorkspace(workspaces){
   return new Promise(function(resolve, reject) {

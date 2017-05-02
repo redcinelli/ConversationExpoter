@@ -13,4 +13,8 @@ block content
               input#password.form-control(type='password',value='zgPYHw5cKm1c' ,name='password')
             button.btn.btn-primary(type='button' id='triggerGW') Sign up
 
+  form(id='jsonfile', name='jsonfile', enctype='multipart/form-data')
+            h2 JSON File
+            input(type='file' id='fileinput')
+            input(type='button' id='btnLoad' value='Load' onclick='loadFile();')
   div(id='result')

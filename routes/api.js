@@ -40,6 +40,20 @@ router.get('/exportworkspace', function(req, res, next) {
       res.status(500).send(err)
     })
   }
+}).post('/exportworkspace',function(req, res) {
+  var importedJson = JSON.parse(req.body.data)
+  if(!importedJson ||importedJson == '' || importedJson == {}){
+    res.status(406).send("The data sended was empty")
+  }else {
+    conversationToCsv.uploadJSONtoxlsx(importedJson)
+    .then((pathFile)=>{
+      pathFile = pathFile.split('public')[1];
+      res.status(200).send(pathFile)
+    }).catch((err)=>{
+      console.log(err);
+      res.status(500).send(err)
+    })
+  }
 });
 
 module.exports = router;
