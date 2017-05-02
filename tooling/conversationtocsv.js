@@ -47,6 +47,8 @@ module.exports.exportWorspace = function (username,password,workspace_id) {
       var nameFile = Date.now()+`.xlsx`;
       var pathFile = path.join(__dirname,'..','public','tmp',nameFile);
       console.log('///////////////////////////////////////////////////');
+      console.log('dirnanme : ',__dirname);
+      console.log('statSync dirnanme: ',fs.statSync(__dirname));
       console.log('statSync : ',fs.statSync(path.join(__dirname,'..','public','tmp')));
       console.log(fs.readdirSync(path.join(__dirname,'..','public','tmp')));
       console.log('///////////////////////////////////////////////////');
