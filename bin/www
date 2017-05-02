@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('conversationexporter:server');
 var http = require('http');
+const init = require('../tooling/conversationtocsv').init;
 
 /**
  * Get port from environment and store in Express.
@@ -87,4 +88,5 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+  init();
 }

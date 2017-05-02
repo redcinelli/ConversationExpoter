@@ -60,6 +60,7 @@ module.exports.exportWorspace = function (username,password,workspace_id) {
 };
 
 module.exports.uploadJSONtoxlsx = function (data) {
+  cleanner.manageSize();
   return new Promise(function(resolve, reject) {
     var nameFile = Date.now()+`.xlsx`;
     var pathFile = path.join(__dirname,'..','public','tmp',nameFile);
@@ -111,4 +112,18 @@ function exportWorspace(conversation, workspace_id){
       resolve(response)
     })
   });
+}
+module.exports.init = function () {
+  console.log('in init');
+  fs.stat(path.join(__dirname,'..','public','tmp'),function(err,resultat){
+    if(err || !resultat.isDirectory ){
+      console.log('folder do not exist we have to create it');
+      fs.mkdir(path.join(__dirname,'..','public','tmp'),function(err,res){
+        if(err)console.log('fail to create the folder tmp');
+        else console.log('Success to create folder tmp');
+      })
+    }else {
+      console.log('folder already exist');
+    }
+  })
 }
