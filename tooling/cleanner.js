@@ -16,18 +16,18 @@ function totSize(path){
         console.log(`files in tmp directory :${files}`);
         var arrPromFile = [];
         for (file of files) {
-          var P = new Promise(function(resStat, rejStat) {
-            var newPath = path+file;
-            // console.log(newPath);
-            fs.stat(newPath,function(err,stat){
-              if(err){
-                rejStat(new Error(err))
-              }else {
-                resStat(stat.size);
-              }
+            var P = new Promise(function(resStat, rejStat) {
+              var newPath = path+file;
+              // console.log(newPath);
+              fs.stat(newPath,function(err,stat){
+                if(err){
+                  rejStat(new Error(err))
+                }else {
+                  resStat(stat.size);
+                }
+              });
             });
-          });
-          arrPromFile.push(P)
+            arrPromFile.push(P)
         }
         Promise.all(arrPromFile)
                 .then((arrSize)=>{resolve(arrSize.reduce((a,b)=>{return a+b;}))})

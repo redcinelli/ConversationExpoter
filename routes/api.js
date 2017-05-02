@@ -42,6 +42,7 @@ router.get('/exportworkspace', function(req, res, next) {
   }
 }).post('/exportworkspace',function(req, res) {
   var importedJson = JSON.parse(req.body.data)
+  console.log(importedJson.plop);
   if(!importedJson ||importedJson == '' || importedJson == {}){
     res.status(406).send("The data sended was empty")
   }else {

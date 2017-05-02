@@ -58,11 +58,13 @@ module.exports.exportWorspace = function (username,password,workspace_id) {
     .catch((err)=>{reject(err)});
   });
 };
+
 module.exports.uploadJSONtoxlsx = function (data) {
   return new Promise(function(resolve, reject) {
     var nameFile = Date.now()+`.xlsx`;
     var pathFile = path.join(__dirname,'..','public','tmp',nameFile);
     console.log('starting parse of the json');
+    console.log(data.name);
     xlsxParser.formatXLSX(data,pathFile)
     resolve(pathFile);
   });

@@ -64,7 +64,7 @@ function loadFile() {
       fr.readAsText(file);
       console.log(fr);
       fr.onloadend = function(){
-        $.post( "/api/exportworkspace", { data : JSON.stringify(fr.result)})
+        $.post( "/api/exportworkspace", { data : fr.result})
         .done(function(data){
           console.log(data);
           cleanResult()
