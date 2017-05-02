@@ -46,8 +46,10 @@ module.exports.exportWorspace = function (username,password,workspace_id) {
     .then((fullworkspace)=>{
       var nameFile = Date.now()+`.xlsx`;
       var pathFile = path.join(__dirname,'..','public','tmp',nameFile);
+      console.log('///////////////////////////////////////////////////');
       console.log('statSync : ',fs.statSync(path.join(__dirname,'..','public','tmp')));
       console.log(fs.readdirSync(path.join(__dirname,'..','public','tmp')));
+      console.log('///////////////////////////////////////////////////');
       console.log("writting tmp file :",pathFile);
       xlsxParser.formatXLSX(fullworkspace,pathFile)
       resolve(pathFile.slice(8));
