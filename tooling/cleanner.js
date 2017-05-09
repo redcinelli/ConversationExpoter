@@ -30,7 +30,7 @@ function totSize(path){
             arrPromFile.push(P)
         }
         Promise.all(arrPromFile)
-                .then((arrSize)=>{resolve(arrSize.reduce((a,b)=>{return a+b;}))})
+                .then((arrSize)=>{arrSize.length ? resolve(arrSize.reduce((a,b)=>{return a+b;})) : resolve(0)})
                 .catch((err)=>{reject(err)});
       }
     })
