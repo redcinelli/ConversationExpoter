@@ -28,11 +28,18 @@ function extractIintent(dataToCsv,dataInJson){
   if(dataInJson.intents){
     dataInJson.intents.forEach(function(val,index,array){
       console.log("\textracting data from intent :",val.intent);
-      val.examples.forEach(function(exVal,exIndex,exArray){
-        //  autoIncrement+=1;
-        var newRow = [exVal.text,val.intent]
+      // we make sure they are some exemples ... if not we push it empty
+      if(val.exemples && val.exemples.length != 0){
+        val.examples.forEach(function(exVal,exIndex,exArray){
+          //  autoIncrement+=1;
+          var newRow = [exVal.text,val.intent]
+          dataToCsv.intents.push(newRow);
+        })
+      }else {
+        // ex val do not exist but the intent do
+        var newRow = ['',val.intent]
         dataToCsv.intents.push(newRow);
-      })
+      }
     })
   }
 
@@ -40,12 +47,23 @@ function extractIintent(dataToCsv,dataInJson){
   if(dataInJson.entities){
     dataInJson.entities.forEach(function(val,index,array){
       console.log("\textracting data from entities :",val.entity);
-      val.values.forEach(function(exVal,exIndex,exArray){
-        exVal.synonyms.forEach(function(synonym, synonymIndex, synonymsArray){
-          var newRow = [val.entity, exVal.value, synonym]
-          dataToCsv.entities.push(newRow);
+      if(val.values.length != 0){
+        val.values.forEach(function(exVal,exIndex,exArray){
+          //same as above for the entities, if there is no synonym we still want to extract the entity
+          if(exVal.synonyms && exVal.synonyms.length != 0){
+            exVal.synonyms.forEach(function(synonym, synonymIndex, synonymsArray){
+              var newRow = [val.entity, exVal.value, synonym]
+              dataToCsv.entities.push(newRow);
+            })
+          }else {
+            var newRow = [val.entity, exVal.value, '']
+            dataToCsv.entities.push(newRow);
+          }
         })
-      })
+      }else {
+        var newRow = [val.entity, '', '']
+        dataToCsv.entities.push(newRow);
+      }
     })
   }
   return dataToCsv;
