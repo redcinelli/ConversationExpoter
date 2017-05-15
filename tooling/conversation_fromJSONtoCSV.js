@@ -29,7 +29,7 @@ function extractIintent(dataToCsv,dataInJson){
     dataInJson.intents.forEach(function(val,index,array){
       console.log("\textracting data from intent :",val.intent);
       // we make sure they are some exemples ... if not we push it empty
-      if(val.exemples && val.exemples.length != 0){
+      if(val.examples && val.examples.length != 0){
         val.examples.forEach(function(exVal,exIndex,exArray){
           //  autoIncrement+=1;
           var newRow = [exVal.text,val.intent]
