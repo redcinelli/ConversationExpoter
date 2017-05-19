@@ -8,17 +8,46 @@ const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
+const conversationGateway = [
+  "https://gateway-fra.watsonplatform.net/conversation/api",
+  "https://gateway.watsonplatform.net/conversation/api"
+]
 
+var findgateway = function (username,password){
+  return new Promise(function(resolve, reject) {
+    var test = [];
+    for (gateway of conversationGateway) {
+      test.push(pingWorkSpaces(
+        watson.conversation({
+          username: username,
+          password: password,
+          url : gateway,
+          version: 'v1',
+          version_date: '2017-04-21'
+        })
+      ))
+    }
+    Promise.race(test).then((workspace)=>{
+      resolve(workspace)
+    }).catch((err)=>{
+      reject(err)
+    })
+  });
+}
 
 module.exports.listingWorkspace = function (username,password) {
-  var conversation = watson.conversation({
-    username: username,
-    password: password,
-    version: 'v1',
-    version_date: '2017-04-21'
-  });
+  // var conversation = watson.conversation({
+  //   username: username,
+  //   password: password,
+  //   url : "https://gateway-fra.watsonplatform.net/conversation/api",
+  //   version: 'v1',
+  //   version_date: '2017-04-21'
+  // });
   return new Promise(function(resolve, reject) {
-    getWorkSpaces(conversation)
+    findgateway(username, password)
+    .then((conversation)=>{
+      return getWorkSpaces(conversation)
+    })
     .then((infoWorkspaces)=>{
       var wsNameID = {}
       for (ws of infoWorkspaces) {
@@ -35,14 +64,18 @@ module.exports.listingWorkspace = function (username,password) {
 module.exports.exportWorspace = function (username,password,workspace_id) {
   // we make a bit of space in the tmp directory
   cleanner.manageSize();
-  var conversation = watson.conversation({
-    username: username,
-    password: password,
-    version: 'v1',
-    version_date: '2017-04-21'
-  });
+  // var conversation = watson.conversation({
+  //   username: username,
+  //   password: password,
+  //   url : "https://gateway-fra.watsonplatform.net/conversation/api",
+  //   version: 'v1',
+  //   version_date: '2017-04-21'
+  // });
   return new Promise(function(resolve, reject) {
-    exportWorspace(conversation,workspace_id)
+    findgateway(username, password)
+    .then((conversation)=>{
+      return exportWorspace(conversation,workspace_id)
+    })
     .then((fullworkspace)=>{
       var nameFile = Date.now()+`.xlsx`;
       var pathFile = path.join(__dirname,'..','public','tmp',nameFile);
@@ -94,6 +127,17 @@ function getWorkSpaces(conversation){
         reject(err)
       }else {
         resolve(response.workspaces)
+      }
+    })
+  });
+}
+function pingWorkSpaces(conversation){
+  return new Promise(function(resolve, reject) {
+    conversation.listWorkspaces({},(err, response)=>{
+      if(err){
+        reject(err)
+      }else {
+        resolve(conversation)
       }
     })
   });
