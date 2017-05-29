@@ -17,6 +17,7 @@ var findgateway = function (username,password){
   return new Promise(function(resolve, reject) {
     var test = [];
     for (gateway of conversationGateway) {
+      console.log(`findgateway using ${gateway}`);
       test.push(pingWorkSpaces(
         watson.conversation({
           username: username,
@@ -36,13 +37,6 @@ var findgateway = function (username,password){
 }
 
 module.exports.listingWorkspace = function (username,password) {
-  // var conversation = watson.conversation({
-  //   username: username,
-  //   password: password,
-  //   url : "https://gateway-fra.watsonplatform.net/conversation/api",
-  //   version: 'v1',
-  //   version_date: '2017-04-21'
-  // });
   return new Promise(function(resolve, reject) {
     findgateway(username, password)
     .then((conversation)=>{
@@ -64,13 +58,6 @@ module.exports.listingWorkspace = function (username,password) {
 module.exports.exportWorspace = function (username,password,workspace_id) {
   // we make a bit of space in the tmp directory
   cleanner.manageSize();
-  // var conversation = watson.conversation({
-  //   username: username,
-  //   password: password,
-  //   url : "https://gateway-fra.watsonplatform.net/conversation/api",
-  //   version: 'v1',
-  //   version_date: '2017-04-21'
-  // });
   return new Promise(function(resolve, reject) {
     findgateway(username, password)
     .then((conversation)=>{
@@ -79,12 +66,6 @@ module.exports.exportWorspace = function (username,password,workspace_id) {
     .then((fullworkspace)=>{
       var nameFile = Date.now()+`.xlsx`;
       var pathFile = path.join(__dirname,'..','public','tmp',nameFile);
-      // console.log('dirnanme : ',__dirname);
-      // console.log('statSync dirnanme: ',fs.statSync(__dirname));
-      // console.log('statSync : ',fs.statSync(path.join(__dirname,'..','public','tmp')));
-      // console.log(fs.readdirSync(path.join(__dirname,'..','public','tmp')));
-      // console.log('error : ',e);
-      // console.log("writting tmp file :",pathFile);
       xlsxParser.formatXLSX(fullworkspace,pathFile)
       resolve(pathFile);
     })
@@ -124,8 +105,10 @@ function getWorkSpaces(conversation){
   return new Promise(function(resolve, reject) {
     conversation.listWorkspaces({},(err, response)=>{
       if(err){
+        console.log(`getWorkSpaces error : ${err}`);
         reject(err)
       }else {
+        console.log(`pingWorkSpaces success: ${JSON.stringify(response)}`);
         resolve(response.workspaces)
       }
     })
@@ -135,8 +118,10 @@ function pingWorkSpaces(conversation){
   return new Promise(function(resolve, reject) {
     conversation.listWorkspaces({},(err, response)=>{
       if(err){
+        console.log(`pingWorkSpaces error : ${err}`);
         reject(err)
       }else {
+        console.log(`pingWorkSpaces success: ${JSON.stringify(conversation)}`);
         resolve(conversation)
       }
     })
