@@ -18,15 +18,7 @@ var findgateway = function (username,password){
     var test = [];
     for (gateway of conversationGateway) {
       console.log(`findgateway using ${gateway}`);
-      test.push(pingWorkSpaces(
-        watson.conversation({
-          username: username,
-          password: password,
-          url : gateway,
-          version: 'v1',
-          version_date: '2017-04-21'
-        })
-      ))
+      test.push(pingWorkSpaces(username,password,gateway))
     }
     Promise.race(test).then((workspace)=>{
       resolve(workspace)
@@ -108,20 +100,28 @@ function getWorkSpaces(conversation){
         console.log(`getWorkSpaces error : ${err}`);
         reject(err)
       }else {
-        console.log(`pingWorkSpaces success: ${JSON.stringify(response)}`);
+        console.log(`getWorkSpaces success: ${JSON.stringify(response)}`);
         resolve(response.workspaces)
       }
     })
   });
 }
-function pingWorkSpaces(conversation){
+function pingWorkSpaces(username,password,gateway){
+  console.log(gateway);
   return new Promise(function(resolve, reject) {
+    let conversation =watson.conversation({
+      username: username,
+      password: password,
+      url : gateway,
+      version: 'v1',
+      version_date: '2017-04-21'
+    })
     conversation.listWorkspaces({},(err, response)=>{
       if(err){
         console.log(`pingWorkSpaces error : ${err}`);
         setTimeout(reject,10000,err)
       }else {
-        console.log(`pingWorkSpaces success: ${JSON.stringify(conversation)}`);
+        console.log(`pingWorkSpaces success: username:${username} password:${password} gateway:${gateway}`);
         resolve(conversation)
       }
     })
