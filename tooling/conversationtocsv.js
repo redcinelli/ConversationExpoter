@@ -119,7 +119,7 @@ function pingWorkSpaces(conversation){
     conversation.listWorkspaces({},(err, response)=>{
       if(err){
         console.log(`pingWorkSpaces error : ${err}`);
-        setTimeout(reject,401,err)
+        setTimeout(reject,10000,err)
       }else {
         console.log(`pingWorkSpaces success: ${JSON.stringify(conversation)}`);
         resolve(conversation)
