@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test" : "nodemon ./bin/www"
+    "test": "nodemon ./bin/www"
   },
-  "licence":"BSD-3-Clause",
+  "licence": "BSD-3-Clause",
   "dependencies": {
+    "bluebird": "^3.5.0",
     "body-parser": "~1.17.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
