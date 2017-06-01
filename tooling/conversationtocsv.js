@@ -4,6 +4,8 @@ const xlsxParser = require('./conversation_fromJSONtoCSV');
 const cleanner = require('../tooling/cleanner');
 const path = require('path');
 const fs = require('fs');
+const Promise = require("bluebird");
+
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
@@ -20,7 +22,7 @@ var findgateway = function (username,password){
       console.log(`findgateway using ${gateway}`);
       test.push(pingWorkSpaces(username,password,gateway))
     }
-    Promise.race(test).then((workspace)=>{
+    Promise.any(test).then((workspace)=>{
       resolve(workspace)
     }).catch((err)=>{
       reject(err)
@@ -109,22 +111,26 @@ function getWorkSpaces(conversation){
 function pingWorkSpaces(username,password,gateway){
   console.log(gateway);
   return new Promise(function(resolve, reject) {
-    let conversation =watson.conversation({
-      username: username,
-      password: password,
-      url : gateway,
-      version: 'v1',
-      version_date: '2017-04-21'
-    })
-    conversation.listWorkspaces({},(err, response)=>{
-      if(err){
-        console.log(`pingWorkSpaces error : ${err}`);
-        setTimeout(reject,10000,err)
-      }else {
-        console.log(`pingWorkSpaces success: username:${username} password:${password} gateway:${gateway}`);
-        resolve(conversation)
-      }
-    })
+    try {
+      let conversation =watson.conversation({
+        username: username,
+        password: password,
+        url : gateway,
+        version: 'v1',
+        version_date: '2017-04-21'
+      })
+      conversation.listWorkspaces({},(err, response)=>{
+        if(err){
+          console.log(`pingWorkSpaces error : ${err}`);
+          setTimeout(reject,10000,err)
+        }else {
+          console.log(`pingWorkSpaces success: username:${username} password:${password} gateway:${gateway}`);
+          resolve(conversation)
+        }
+      })
+    } catch (err) {
+      setTimeout(reject,10000,err)
+    }
   });
 }
 function exportWorspace(conversation, workspace_id){
